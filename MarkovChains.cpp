@@ -69,10 +69,14 @@ int main()
 	map<string, int> map;
 
 	ifstream input;
- 	input.open("shakespeare_inp.txt");
+	string filename;
+	
+	cout<<"Enter input filename: ";
+	cin>>filename;
+ 	input.open(filename + "_inp.txt");
  	
 	ofstream output;
- 	output.open("shakespeare_out.txt");
+ 	output.open(filename + "_out.txt");
  	
  	
  	//inputting from file
@@ -152,5 +156,7 @@ int main()
 	}
 	 
 	output<<"Generated text:\n"<<gen<<"\n";
+	
+	cout<<"Modified "<<filename + "_out.txt. \n";
 	
 }
