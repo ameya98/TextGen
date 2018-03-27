@@ -1,4 +1,5 @@
-//Markov Chains
+// Markov Chains
+// Author : Ameya Daigavane
 
 #include <iostream>
 #include <string>
@@ -7,7 +8,7 @@
 #include <fstream>
 using namespace std;
 
-
+// Each class instance represents a string of fixed length. Transitions occur between these strings.  
 class markovchain
 {
 	private:
@@ -23,26 +24,31 @@ class markovchain
 
 };
 
+// Add transition
 void markovchain::add_transition(markovchain *Y)
 {
 	adjlist.push_back(Y);
 }
 
+// Setter for the text property
 void markovchain::set_text(string s)
 {
 	text = s;
 }
 
+// Returns the list of pointers to the next strings to which we can transition randomly.
 list<markovchain *> markovchain::next_list()
 {
 	return adjlist;
 }
 
+// Convert markovchain object back to string.
 string markovchain::to_string()
 {
 	return text;
 }
 
+// The actual random transition
 markovchain * markovchain::next()
 {
 	long n = adjlist.size();
@@ -88,7 +94,7 @@ int main()
  	output.open(outputfilename);
 
 
- 	//inputting from file
+ 	// inputting from file - m stores all the file text.
  	m = "";
 
  	for(string line; getline(input, line); )
@@ -97,12 +103,13 @@ int main()
 
 	}
 
-	//k : order of the Markov model
-	cout<<"Order of Markov Model: ";
-	cin>>k;
+	// k is the order of the Markov model
+	cout << "Order of Markov Model: ";
+	cin >> k;
 
-	cout<<"\nTraining Markov Chain of order "<<k<<"...\n";
+	cout<< "\n" << "Training Markov Chain of order "<< k <<"...\n";
 
+	// to ensure that we have k equal sized words
 	string m_large = m;
 	markovchain s[m.length()];
 	int count = 0;
@@ -112,8 +119,10 @@ int main()
 		m_large += m;
 	}
 
+	// hashmap to map the input substrings of length k
 	for(int i = 0; i < m.length(); ++i)
 	{
+		// input substring
 		str = m_large.substr(i, k);
 
 		if (map.count(str) == 0)
@@ -150,9 +159,11 @@ int main()
 			}
 		}
 
+		// add transition
 		s[j1].add_transition(&(s[j2]));
 	}
 
+	// all transitions added - now generate the random walk through the states
 	string gen = s[0].to_string();
 	markovchain * mc = &s[0];
 
@@ -160,7 +171,6 @@ int main()
 	{
 		mc = (*mc).next();
 		gen += ((*mc).to_string()).back();
-
 
 	}
 
